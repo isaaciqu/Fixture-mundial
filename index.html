@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#002868">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Fixture Mundial 2026 · V 1.8</title>
+<title>Fixture Mundial 2026 · V 2.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>⚽</text></svg>">
@@ -927,6 +927,313 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.0625rem}
   text-align:center;
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   MEJORES TERCEROS
+══════════════════════════════════════════════════════════════ */
+.terc-info{
+  display:flex;align-items:flex-start;gap:.75rem;
+  margin:.75rem 1rem;padding:.875rem;
+  background:var(--azul-bg);border-radius:var(--r-lg);
+  border:1px solid var(--azul-light);
+}
+.terc-info-ico{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.terc-info-txt{
+  font-family:var(--ft);font-size:.8125rem;color:var(--azul-m);
+  line-height:1.6;
+}
+/* Fila clasificada top 8 */
+.terc-cls{
+  background:linear-gradient(90deg,rgba(22,163,74,.08) 0%,transparent 100%);
+  border-left:3px solid var(--ok) !important;
+}
+/* Fila eliminada */
+.terc-elim{
+  border-left:3px solid var(--g300) !important;
+  opacity:.75;
+}
+/* Posición número con medalla */
+.terc-pos{
+  font-family:var(--fm);font-size:.70rem;
+  color:var(--g400);font-weight:600;
+  text-align:center;
+}
+/* Badge grupo en tabla */
+.terc-g-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:5px;
+  font-family:var(--fd);font-size:.8rem;color:#fff;font-weight:700;
+}
+/* Separador entre clasificados y eliminados */
+.terc-sep-row td{
+  padding:.25rem .5rem;
+  background:var(--g100);
+  font-family:var(--ft);font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--g500);
+  text-align:center;border-top:2px dashed var(--g300);
+  border-bottom:2px dashed var(--g300);
+}
+/* Grupos sin resultados */
+.terc-pendiente{
+  opacity:.5;font-style:italic;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   BOTÓN FLOTANTE RESET (solo pantalla Inicio)
+══════════════════════════════════════════════════════════════ */
+.fab-reset{
+  position:fixed;
+  bottom:calc(var(--bot-h) + var(--safe-b) + 1rem);
+  right:1rem;
+  z-index:350;
+  width:52px;height:52px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#dc2626,#991b1b);
+  color:#fff;
+  border:none;cursor:pointer;
+  display:none; /* solo visible en inicio */
+  align-items:center;justify-content:center;
+  font-size:1.375rem;
+  box-shadow:0 4px 16px rgba(220,38,38,.45);
+  transition:all var(--tr);
+  -webkit-tap-highlight-color:transparent;
+}
+.fab-reset.visible{ display:flex; }
+.fab-reset:active { transform:scale(.9); }
+/* Tooltip */
+.fab-reset::before{
+  content:'Limpiar todo';
+  position:absolute;right:calc(100% + .625rem);top:50%;
+  transform:translateY(-50%);
+  background:var(--g900);color:#fff;
+  font-family:var(--ft);font-size:.70rem;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  padding:.375rem .75rem;border-radius:var(--r-full);
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity var(--tr);
+}
+.fab-reset:hover::before{ opacity:1; }
+
+@media(min-width:769px){
+  .fab-reset{
+    bottom:2rem;right:2rem;
+    width:56px;height:56px;font-size:1.5rem;
+  }
+}
+
+/* ══ MODAL CONFIRMACIÓN RESET ══ */
+.reset-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;
+  padding:1rem;
+}
+.reset-overlay.open{ display:flex; }
+.reset-modal{
+  background:#fff;border-radius:var(--r-2xl);
+  width:100%;max-width:340px;overflow:hidden;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.reset-modal-top{
+  background:linear-gradient(135deg,#dc2626,#991b1b);
+  padding:1.5rem 1.25rem 1.25rem;text-align:center;
+}
+.reset-modal-ico{ font-size:2.5rem;margin-bottom:.5rem }
+.reset-modal-tit{
+  font-family:var(--ft);font-size:1.125rem;font-weight:700;
+  color:#fff;text-transform:uppercase;letter-spacing:.03em;
+}
+.reset-modal-sub{
+  font-family:var(--ft);font-size:.8125rem;
+  color:rgba(255,255,255,.7);margin-top:.375rem;
+}
+.reset-modal-body{ padding:1.25rem }
+.reset-modal-lista{
+  background:var(--g50);border-radius:var(--r-lg);
+  padding:.875rem 1rem;margin-bottom:1rem;
+}
+.reset-modal-item{
+  display:flex;align-items:center;gap:.625rem;
+  font-family:var(--ft);font-size:.8125rem;color:var(--g700);
+  padding:.375rem 0;border-bottom:1px solid var(--g100);
+}
+.reset-modal-item:last-child{ border-bottom:none }
+.reset-modal-aviso{
+  font-family:var(--ft);font-size:.75rem;color:var(--danger);
+  text-align:center;margin-bottom:1rem;font-weight:600;
+  letter-spacing:.02em;
+}
+.reset-btns{
+  display:grid;grid-template-columns:1fr 1fr;gap:.625rem;
+}
+.btn-reset-cancel{
+  padding:.875rem;min-height:50px;
+  background:var(--g100);color:var(--g700);
+  font-family:var(--ft);font-size:.9375rem;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  border:none;border-radius:var(--r-lg);cursor:pointer;
+  transition:all var(--tr);-webkit-tap-highlight-color:transparent;
+}
+.btn-reset-cancel:active{ background:var(--g200); }
+.btn-reset-confirm{
+  padding:.875rem;min-height:50px;
+  background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;
+  font-family:var(--ft);font-size:.9375rem;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  border:none;border-radius:var(--r-lg);cursor:pointer;
+  transition:all var(--tr);-webkit-tap-highlight-color:transparent;
+  box-shadow:0 4px 12px rgba(220,38,38,.3);
+}
+.btn-reset-confirm:active{ transform:scale(.97); }
+
+/* ══════════════════════════════════════════════════════════════
+   MÓDULO ANÁLISIS APUESTAS — V 2.1
+══════════════════════════════════════════════════════════════ */
+.vp-btn-analisis{
+  width:100%;padding:.625rem;min-height:44px;
+  background:linear-gradient(135deg,#0d7a3e,#15803d);
+  color:#fff;font-family:var(--ft);font-size:.875rem;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;
+  border:none;border-radius:var(--r-lg);
+  cursor:pointer;transition:all var(--tr);
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  -webkit-tap-highlight-color:transparent;
+  margin-top:.5rem;
+  box-shadow:0 3px 10px rgba(22,101,52,.35);
+  position:relative;overflow:hidden;
+}
+.vp-btn-analisis::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+  animation:shimmer 2.5s infinite;
+}
+.vp-btn-analisis:active{transform:scale(.97)}
+.vp-btn-analisis:disabled{opacity:.45;cursor:not-allowed}
+
+.analisis-overlay{
+  position:fixed;inset:0;z-index:700;
+  background:rgba(0,0,0,.72);backdrop-filter:blur(6px);
+  display:none;align-items:flex-end;justify-content:center;
+  opacity:0;transition:opacity .2s ease;
+}
+.analisis-overlay.open{display:flex;opacity:1}
+
+.analisis-sheet{
+  background:#fff;
+  border-radius:var(--r-2xl) var(--r-2xl) 0 0;
+  width:100%;max-width:520px;
+  max-height:92dvh;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  overflow:hidden;
+}
+.analisis-overlay.open .analisis-sheet{transform:translateY(0)}
+.analisis-drag{width:40px;height:4px;background:var(--g300);border-radius:2px;margin:10px auto 0;flex-shrink:0}
+
+.analisis-header{
+  background:linear-gradient(135deg,#0d7a3e,#166534);
+  padding:1rem 1.25rem .875rem;flex-shrink:0;
+}
+.analisis-header-match{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:.5rem;margin-bottom:.5rem;
+}
+.analisis-eq{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.analisis-logo{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.analisis-eq-nom{
+  font-family:var(--ft);font-size:.70rem;font-weight:700;
+  text-transform:uppercase;text-align:center;color:rgba(255,255,255,.9);line-height:1.2;
+}
+.analisis-mid{text-align:center}
+.analisis-score-hdr{font-family:var(--fd);font-size:2rem;color:#fff;letter-spacing:.05em;line-height:1}
+.analisis-vs-hdr{font-family:var(--ft);font-size:.75rem;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.1em}
+.analisis-estado-hdr{font-family:var(--fm);font-size:.65rem;color:rgba(255,255,255,.6);text-align:center;margin-top:2px}
+.analisis-header-sub{
+  text-align:center;font-family:var(--ft);font-size:.75rem;font-weight:700;
+  color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;
+}
+
+.analisis-body{overflow-y:auto;padding:1rem;flex:1;-webkit-overflow-scrolling:touch}
+.analisis-body::-webkit-scrollbar{width:4px}
+.analisis-body::-webkit-scrollbar-thumb{background:var(--g300);border-radius:2px}
+
+/* Loading */
+.analisis-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:2.5rem 1rem;text-align:center}
+.analisis-spinner{width:44px;height:44px;border:3px solid var(--g200);border-top-color:#15803d;border-radius:50%;animation:spin .8s linear infinite}
+.analisis-loading-txt{font-family:var(--ft);font-size:.875rem;color:var(--g600);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.analisis-loading-sub{font-family:var(--ft);font-size:.75rem;color:var(--g400)}
+
+/* Apuesta card */
+.apuesta-card{border:1.5px solid var(--g200);border-radius:var(--r-xl);overflow:hidden;margin-bottom:.875rem;box-shadow:var(--sh-sm)}
+.apuesta-head{display:flex;align-items:center;gap:.625rem;padding:.75rem 1rem;background:var(--g50);border-bottom:1.5px solid var(--g200)}
+.apuesta-ico{font-size:1.25rem;flex-shrink:0}
+.apuesta-tit{font-family:var(--ft);font-size:.9375rem;font-weight:700;text-transform:uppercase;color:var(--g900);letter-spacing:.03em}
+.apuesta-tipo{font-family:var(--ft);font-size:.70rem;color:var(--g500);margin-top:1px}
+.apuesta-score-badge{margin-left:auto;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1px}
+
+/* Gauge SVG */
+.gauge-wrap{position:relative;width:58px;height:58px}
+.gauge-svg{transform:rotate(-90deg)}
+.gauge-track{fill:none;stroke:var(--g200);stroke-width:6}
+.gauge-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.gauge-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.0625rem;color:var(--g900);line-height:1}
+.gauge-max{font-family:var(--ft);font-size:.6rem;color:var(--g400);letter-spacing:.04em}
+.nivel-bajo  .gauge-fill{stroke:#ef4444}.nivel-bajo  .gauge-label{color:#ef4444}
+.nivel-medio .gauge-fill{stroke:#f59e0b}.nivel-medio .gauge-label{color:#d97706}
+.nivel-alto  .gauge-fill{stroke:#16a34a}.nivel-alto  .gauge-label{color:#15803d}
+
+/* Rec bar */
+.apuesta-rec{padding:.5rem 1rem;display:flex;align-items:center;gap:.5rem;font-family:var(--ft);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.apuesta-rec--bajo  {background:#fef2f2;color:#dc2626}
+.apuesta-rec--medio {background:#fffbeb;color:#d97706}
+.apuesta-rec--alto  {background:#f0fdf4;color:#16a34a}
+.apuesta-rec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rec-bajo{background:#ef4444}.rec-medio{background:#f59e0b}.rec-alto{background:#16a34a}
+
+/* Body apuesta */
+.apuesta-body{padding:.875rem 1rem}
+.stats-apuesta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem}
+.stat-ap{background:var(--g50);border-radius:var(--r-md);padding:.5rem .75rem;border:1px solid var(--g200)}
+.stat-ap-n{font-family:var(--ft);font-size:1.0625rem;font-weight:700;color:var(--g900);line-height:1;margin-bottom:2px}
+.stat-ap-l{font-family:var(--ft);font-size:.65rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.05em}
+.stat-ap-sub{font-family:var(--ft);font-size:.65rem;color:var(--g400);margin-top:1px}
+
+/* Barra comparativa */
+.comp-bar-wrap{margin-bottom:.625rem}
+.comp-bar-lbl{display:flex;justify-content:space-between;font-family:var(--ft);font-size:.70rem;font-weight:600;color:var(--g700);text-transform:uppercase;margin-bottom:3px;letter-spacing:.03em}
+.comp-bar{height:7px;background:var(--g200);border-radius:var(--r-full);display:flex;overflow:hidden}
+.comp-bar-home{background:#002868;height:100%;border-radius:var(--r-full) 0 0 var(--r-full);transition:width .5s ease}
+.comp-bar-away{background:#C8102E;height:100%;border-radius:0 var(--r-full) var(--r-full) 0;transition:width .5s ease}
+
+/* Análisis texto */
+.analisis-txt{font-family:var(--ft);font-size:.8125rem;color:var(--g700);line-height:1.7;padding:.625rem .75rem;background:var(--g50);border-radius:var(--r-md);border-left:3px solid var(--g300);margin-top:.625rem}
+.analisis-txt strong{color:var(--g900)}
+.analisis-txt-verde{border-left-color:#16a34a}
+.analisis-txt-amarillo{border-left-color:#d97706}
+.analisis-txt-rojo{border-left-color:#ef4444}
+
+/* Resumen global */
+.resumen-global{margin-top:1rem;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--r-xl);padding:1rem;border:2px solid #334155}
+.resumen-tit{font-family:var(--ft);font-size:.9375rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.resumen-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.875rem}
+.resumen-item{background:rgba(255,255,255,.06);border-radius:var(--r-md);padding:.625rem;border:1px solid rgba(255,255,255,.08)}
+.resumen-item-n{font-family:var(--fd);font-size:1.375rem;line-height:1}
+.resumen-item-l{font-family:var(--ft);font-size:.65rem;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em}
+.total-bar-wrap{margin-bottom:.75rem}
+.total-bar-lbl{display:flex;justify-content:space-between;font-family:var(--ft);font-size:.70rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:.375rem}
+.total-bar{height:10px;background:rgba(255,255,255,.1);border-radius:var(--r-full);overflow:hidden}
+.total-bar-fill{height:100%;border-radius:var(--r-full);background:linear-gradient(90deg,#16a34a,#22c55e);transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+.resumen-nota{font-family:var(--ft);font-size:.75rem;color:rgba(255,255,255,.45);line-height:1.6;text-align:center;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.1)}
+
+.analisis-disclaimer{margin-top:.875rem;padding:.625rem .875rem;background:#fffbeb;border-radius:var(--r-md);border:1px solid #fde68a;font-family:var(--ft);font-size:.70rem;color:#92400e;line-height:1.6}
+
+.analisis-close-btn{width:100%;padding:.875rem;min-height:52px;background:var(--g100);color:var(--g700);font-family:var(--ft);font-size:.9375rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:none;border-radius:var(--r-lg);cursor:pointer;transition:all var(--tr);margin-top:.875rem;flex-shrink:0}
+.analisis-close-btn:active{background:var(--g200)}
+
+@media(min-width:520px){.analisis-sheet{border-radius:var(--r-2xl)!important;margin-bottom:2rem;max-height:88dvh}}
+
 </style>
 </head>
 <body>
@@ -944,6 +1251,7 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.0625rem}
       <li><button class="nav-link act" data-p="inicio"         onclick="ir('inicio')">Inicio</button></li>
       <li><button class="nav-link"     data-p="fixture"        onclick="ir('fixture')">Fixture</button></li>
       <li><button class="nav-link"     data-p="grupos"         onclick="ir('grupos')">Grupos</button></li>
+      <li><button class="nav-link"     data-p="terceros"       onclick="ir('terceros')">Mejores 3ros</button></li>
       <li><button class="nav-link"     data-p="eliminatorias"  onclick="ir('eliminatorias')">Eliminatorias</button></li>
       <li><button class="nav-link"     data-p="final"          onclick="ir('final')">Final</button></li>
     </ul>
@@ -1222,6 +1530,66 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.0625rem}
   <footer class="footer"><div class="footer-inner"><span>⚽ World Cup 2026</span><span>🇺🇸 🇨🇦 🇲🇽</span></div></footer>
 </div>
 
+<!-- ─── MEJORES TERCEROS ────────────────────────── -->
+<div class="pagina" id="p-terceros">
+  <div class="ph">
+    <p class="ph__bread">Fase de Grupos</p>
+    <h1 class="ph__title">Mejores <span>Terceros</span></h1>
+    <p class="ph__sub">Los 8 mejores terceros clasifican a los 16avos de final</p>
+  </div>
+
+  <!-- Explicación -->
+  <div class="terc-info">
+    <div class="terc-info-ico">ℹ️</div>
+    <div class="terc-info-txt">
+      De los <strong>12 grupos</strong>, el equipo en 3er lugar de cada uno entra a esta tabla.
+      Solo los <strong>8 mejores</strong> (sombreados en verde) avanzan a los 16avos de final.
+      Criterios de clasificación FIFA: Puntos → Diferencia de goles → Goles a favor → Goles en contra → Disciplina.
+    </div>
+  </div>
+
+  <!-- Leyenda -->
+  <div style="padding:.5rem 1rem">
+    <div class="leyenda">
+      <div class="ley-item"><div class="ley-dot" style="background:#16a34a"></div>Clasifica a 16avos (Top 8)</div>
+      <div class="ley-item"><div class="ley-dot ley-gris"></div>Eliminado</div>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div style="padding:.5rem 1rem 1.5rem">
+    <div class="tabla-wrap">
+      <table class="tpos" id="tabla-terceros">
+        <thead>
+          <tr>
+            <th style="width:22px">#</th>
+            <th style="text-align:left">Equipo</th>
+            <th title="Grupo">G</th>
+            <th title="Jugados">J</th>
+            <th title="Ganados">W</th>
+            <th title="Empatados">E</th>
+            <th title="Perdidos">P</th>
+            <th title="Goles a favor">GF</th>
+            <th title="Goles en contra">GC</th>
+            <th title="Diferencia de goles">DG</th>
+            <th title="Puntos" style="font-size:.8rem">Pts</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-terceros">
+          <tr><td colspan="11" style="text-align:center;padding:1.5rem;color:var(--g400);font-family:var(--ft);font-size:.8125rem">
+            Ingresa resultados en la sección Grupos para ver la tabla de mejores terceros.
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Nota dinámica -->
+    <div id="terc-nota" style="font-family:var(--ft);font-size:.75rem;color:var(--g500);margin-top:.625rem;text-align:center;line-height:1.6"></div>
+  </div>
+
+  <footer class="footer"><div class="footer-inner"><span>⚽ World Cup 2026</span><span>🇺🇸 🇨🇦 🇲🇽</span></div></footer>
+</div>
+
 <!-- ─── ELIMINATORIAS ────────────────────────── -->
 <div class="pagina" id="p-eliminatorias">
   <div class="ph">
@@ -1292,6 +1660,76 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.0625rem}
   <footer class="footer"><div class="footer-inner"><span>⚽ World Cup 2026</span><span>🇺🇸 🇨🇦 🇲🇽</span></div></footer>
 </div>
 
+
+<!-- ═══════════════════════════════════════════
+     BOTÓN FLOTANTE RESET
+═══════════════════════════════════════════ -->
+<button class="fab-reset" id="fab-reset" onclick="abrirReset()" title="Limpiar todo">
+  🗑️
+</button>
+
+<!-- ═══════════════════════════════════════════
+     OVERLAY ANÁLISIS APUESTAS — V 2.1
+═══════════════════════════════════════════ -->
+<div class="analisis-overlay" id="analisis-overlay" onclick="analisisCerrar(event)">
+  <div class="analisis-sheet">
+    <div class="analisis-drag"></div>
+    <div class="analisis-header">
+      <div class="analisis-header-match">
+        <div class="analisis-eq">
+          <img class="analisis-logo" id="ah-logo1" src="" onerror="this.style.display='none'">
+          <div class="analisis-eq-nom" id="ah-nom1">Local</div>
+        </div>
+        <div class="analisis-mid">
+          <div class="analisis-score-hdr" id="ah-score">VS</div>
+          <div class="analisis-estado-hdr" id="ah-estado"></div>
+        </div>
+        <div class="analisis-eq">
+          <img class="analisis-logo" id="ah-logo2" src="" onerror="this.style.display='none'">
+          <div class="analisis-eq-nom" id="ah-nom2">Visitante</div>
+        </div>
+      </div>
+      <div class="analisis-header-sub">📊 Análisis Estadístico · 4 Mercados de Apuesta</div>
+    </div>
+    <div class="analisis-body" id="analisis-body">
+      <div class="analisis-loading" id="analisis-loading">
+        <div class="analisis-spinner"></div>
+        <div class="analisis-loading-txt">Generando análisis...</div>
+        <div class="analisis-loading-sub">Procesando estadísticas del partido</div>
+      </div>
+    </div>
+    <div style="padding:.5rem 1rem 1rem;flex-shrink:0">
+      <button class="analisis-close-btn" onclick="analisisCerrar()">✕ Cerrar análisis</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmación reset -->
+<div class="reset-overlay" id="reset-overlay" onclick="cerrarReset(event)">
+  <div class="reset-modal">
+    <div class="reset-modal-top">
+      <div class="reset-modal-ico">⚠️</div>
+      <div class="reset-modal-tit">Limpiar todo</div>
+      <div class="reset-modal-sub">Esta acción no se puede deshacer</div>
+    </div>
+    <div class="reset-modal-body">
+      <div class="reset-modal-lista">
+        <div class="reset-modal-item"><span>🗑️</span> Todos los resultados ingresados</div>
+        <div class="reset-modal-item"><span>📊</span> Tablas de posiciones (vuelven a cero)</div>
+        <div class="reset-modal-item"><span>🥉</span> Tabla de mejores terceros</div>
+        <div class="reset-modal-item"><span>⚔️</span> Bracket eliminatorio</div>
+        <div class="reset-modal-item"><span>🔑</span> Última sincronización de API</div>
+        <div class="reset-modal-item"><span>💾</span> Todos los datos del localStorage</div>
+      </div>
+      <div class="reset-modal-aviso">⚠️ Se borrarán TODOS los datos guardados</div>
+      <div class="reset-btns">
+        <button class="btn-reset-cancel" onclick="cerrarReset()">Cancelar</button>
+        <button class="btn-reset-confirm" onclick="ejecutarReset()">🗑️ Limpiar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════
      MODAL INGRESO DE RESULTADOS
 ═══════════════════════════════════════════ -->
@@ -1345,6 +1783,7 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.0625rem}
     <li><button class="bot-item act" data-p="inicio"        onclick="ir('inicio')"><span class="bot-icon">🏠</span>Inicio</button></li>
     <li><button class="bot-item"     data-p="fixture"       onclick="ir('fixture')"><span class="bot-icon">📋</span>Fixture</button></li>
     <li><button class="bot-item"     data-p="grupos"        onclick="ir('grupos')"><span class="bot-icon">🔠</span>Grupos</button></li>
+    <li><button class="bot-item"     data-p="terceros"      onclick="ir('terceros')"><span class="bot-icon">🥉</span>3ros</button></li>
     <li><button class="bot-item"     data-p="eliminatorias" onclick="ir('eliminatorias')"><span class="bot-icon">⚔️</span>Bracket</button></li>
     <li><button class="bot-item"     data-p="final"         onclick="ir('final')"><span class="bot-icon">🏆</span>Final</button></li>
   </ul>
@@ -1572,10 +2011,12 @@ function ir(p){
     el.classList.toggle("act", el.dataset.p===p);
   });
   paginaActual = p;
+  actualizarFAB(p);
   // Renderizar contenido específico
   if(p==="inicio")        renderInicio();
   if(p==="fixture")       renderFixture();
   if(p==="grupos")        renderGrupoActivo();
+  if(p==="terceros")      renderTerceros();
   if(p==="eliminatorias") renderElimActiva();
   if(p==="final")         renderFinal();
 }
@@ -1881,6 +2322,7 @@ function modalGuardar(){
   modalPID=null;
   if(paginaActual==="fixture")  renderFixture();
   if(paginaActual==="grupos")   renderGrupoActivo();
+  if(paginaActual==="terceros") renderTerceros();
   if(paginaActual==="inicio")   renderInicio();
 }
 function modalBorrar(){
@@ -1894,6 +2336,7 @@ function modalBorrar(){
   toast("Resultado borrado","🗑️");
   if(paginaActual==="fixture")  renderFixture();
   if(paginaActual==="grupos")   renderGrupoActivo();
+  if(paginaActual==="terceros") renderTerceros();
   if(paginaActual==="inicio")   renderInicio();
 }
 document.addEventListener("keydown",e=>{
@@ -1905,6 +2348,205 @@ document.addEventListener("keydown",e=>{
   }
 });
 
+
+/* ══════════════════════════════════════════════════
+   MEJORES TERCEROS — Lógica completa
+══════════════════════════════════════════════════ */
+function renderTerceros(){
+  const LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+  const GC_MAP = {A:"#C8102E",B:"#C45911",C:"#166534",D:"#1E3A8A",E:"#78350F",
+                  F:"#164E63",G:"#1E293B",H:"#7C2D12",I:"#4C1D95",J:"#134E4A",
+                  K:"#1E1B4B",L:"#831843"};
+
+  // Obtener el 3ro de cada grupo con sus stats reales
+  const terceros = [];
+
+  LETRAS.forEach(letra => {
+    const st = calcStandings(letra);
+    if(st.length < 3) return;
+
+    const [eq, stats] = st[2]; // índice 2 = 3er lugar
+    const info = MUNDIAL.equipos[eq] || {};
+    const partidosGrupo = MUNDIAL.partidos.filter(p => p.grupo === letra);
+    const jugados = partidosGrupo.filter(p => p.g1 !== null).length;
+
+    terceros.push({
+      eq, stats, info, letra,
+      color: GC_MAP[letra],
+      jugados,          // partidos jugados en el grupo
+      totalGrupo: 3,    // cada grupo tiene 3 partidos
+      completo: jugados === 3
+    });
+  });
+
+  // Ordenar por criterios FIFA para mejores terceros:
+  // 1. Puntos  2. DG  3. GF  4. GC  5. Conf (UEFA > CONMEBOL > AFC > CAF > CONCACAF > OFC)
+  const confPeso = {UEFA:6, CONMEBOL:5, AFC:4, CAF:3, CONCACAF:2, OFC:1};
+
+  terceros.sort((a, b) => {
+    const pa = a.stats, pb = b.stats;
+    const dga = pa.gf - pa.gc, dgb = pb.gf - pb.gc;
+    if(pb.pts !== pa.pts)  return pb.pts  - pa.pts;
+    if(dgb    !== dga)     return dgb     - dga;
+    if(pb.gf  !== pa.gf)  return pb.gf   - pa.gf;
+    if(pa.gc  !== pb.gc)  return pa.gc   - pb.gc;  // menos GC es mejor
+    // Desempate por confederación (criterio FIFA secundario)
+    const ca = confPeso[a.info.conf] || 0;
+    const cb = confPeso[b.info.conf] || 0;
+    return cb - ca;
+  });
+
+  const tbody = document.getElementById("tbody-terceros");
+  const nota  = document.getElementById("terc-nota");
+
+  if(terceros.length === 0){
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:1.5rem;color:var(--g400);font-family:var(--ft);font-size:.8125rem">
+      Ingresa resultados en la sección <strong>Grupos</strong> para ver la tabla de mejores terceros.
+    </td></tr>`;
+    nota.textContent = "";
+    return;
+  }
+
+  // Cuántos grupos tienen todos sus partidos completos
+  const gruposCompletos = terceros.filter(t => t.completo).length;
+  const gruposPendientes = 12 - gruposCompletos;
+
+  // Construir filas
+  let html = "";
+
+  terceros.forEach((t, i) => {
+    const pos    = i + 1;
+    const clsRow = pos <= 8 ? "terc-cls" : "terc-elim";
+    const s      = t.stats;
+    const dg     = s.gf - s.gc;
+    const dgStr  = dg > 0 ? `+${dg}` : `${dg}`;
+    const dgCls  = dg > 0 ? "dg-p" : dg < 0 ? "dg-n" : "";
+
+    // Separador entre 8vo y 9no
+    if(pos === 9){
+      html += `<tr class="terc-sep-row">
+        <td colspan="11">⛔ A partir de aquí eliminados — solo los 8 primeros avanzan</td>
+      </tr>`;
+    }
+
+    // Indicador si el grupo no tiene todos los partidos
+    const pendIcon = !t.completo
+      ? `<span title="${3 - t.jugados} partido(s) pendiente(s)" style="color:var(--warn);margin-left:3px;font-size:.65rem">⏳</span>`
+      : "";
+
+    html += `<tr class="${clsRow} ${!t.completo ? 'terc-pendiente' : ''}">
+      <td class="terc-pos">
+        ${pos <= 8
+          ? `<span style="color:var(--ok);font-weight:700">${pos}</span>`
+          : `<span style="color:var(--g400)">${pos}</span>`}
+      </td>
+      <td>
+        <div class="tpos eq-cell">
+          <span class="eq-flag">${t.info.bandera || "🏳️"}</span>
+          <div>
+            <span class="eq-nom">${t.eq}</span>
+            ${pendIcon}
+          </div>
+        </div>
+      </td>
+      <td>
+        <span class="terc-g-badge" style="background:${t.color}">
+          ${t.letra}
+        </span>
+      </td>
+      <td>${s.j}</td>
+      <td>${s.g}</td>
+      <td>${s.e}</td>
+      <td>${s.p}</td>
+      <td>${s.gf}</td>
+      <td>${s.gc}</td>
+      <td class="${dgCls}">${dgStr}</td>
+      <td class="pts">${s.pts}</td>
+    </tr>`;
+  });
+
+  // Si hay menos de 12 terceros (grupos sin partidos aún)
+  const gruposSinDatos = 12 - terceros.length;
+  if(gruposSinDatos > 0){
+    html += `<tr><td colspan="11" style="text-align:center;padding:.875rem;color:var(--g400);font-family:var(--ft);font-size:.75rem">
+      + ${gruposSinDatos} grupo${gruposSinDatos!==1?"s":""} sin resultados aún
+    </td></tr>`;
+  }
+
+  tbody.innerHTML = html;
+
+  // Nota dinámica
+  const clasificados = Math.min(terceros.filter(t=>t.completo).length, 8);
+  if(gruposCompletos === 12){
+    const top8 = terceros.slice(0,8);
+    nota.innerHTML = `✅ Todos los grupos completados. Clasifican: <strong>${top8.map(t=>t.eq).join(", ")}</strong>`;
+  } else if(gruposCompletos > 0){
+    nota.innerHTML = `⏳ ${gruposCompletos}/12 grupos completados. ${gruposPendientes} grupo${gruposPendientes!==1?"s":""} pendiente${gruposPendientes!==1?"s":""}. La tabla se actualiza automáticamente al ingresar resultados.`;
+  } else {
+    nota.innerHTML = `Ingresa resultados en <strong>Grupos</strong> para calcular los mejores terceros.`;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════
+   BOTÓN FLOTANTE RESET — LÓGICA
+══════════════════════════════════════════════════ */
+
+function abrirReset(){
+  document.getElementById("reset-overlay").classList.add("open");
+}
+
+function cerrarReset(e){
+  if(e && e.target !== document.getElementById("reset-overlay")) return;
+  document.getElementById("reset-overlay").classList.remove("open");
+}
+
+function ejecutarReset(){
+  // 1. Limpiar localStorage completamente
+  localStorage.clear();
+
+  // 2. Resetear todos los resultados en memoria (g1/g2 → null)
+  MUNDIAL.partidos.forEach(p => { p.g1 = null; p.g2 = null; p.fuenteAPI = false; });
+
+  // 3. Resetear partidos eliminatorias
+  const resetElim = arr => arr.forEach(p => { p.eq1=null; p.eq2=null; p.g1=null; p.g2=null; });
+  resetElim(MUNDIAL.elim.dieciseisavos);
+  resetElim(MUNDIAL.elim.octavos);
+  resetElim(MUNDIAL.elim.cuartos);
+  resetElim(MUNDIAL.elim.semifinales);
+  resetElim(MUNDIAL.elim.tercerPuesto);
+  resetElim(MUNDIAL.elim.final);
+
+  // 4. Cerrar modal
+  document.getElementById("reset-overlay").classList.remove("open");
+
+  // 5. Resetear estado de sync bar
+  syncUI("", "<strong>API-Sports.io</strong> · <span style='opacity:.6'>Toca Sincronizar para obtener resultados</span>");
+
+  // 6. Volver al inicio y re-renderizar
+  ir("inicio");
+
+  // 7. Toast confirmación
+  setTimeout(() => toast("✅ Todo limpiado — App restaurada al estado inicial", "🗑️"), 300);
+}
+
+/* ── Mostrar FAB solo en pantalla Inicio ── */
+function actualizarFAB(pagina){
+  const fab = document.getElementById("fab-reset");
+  if(!fab) return;
+  if(pagina === "inicio"){
+    fab.classList.add("visible");
+  } else {
+    fab.classList.remove("visible");
+  }
+}
+
+/* Cerrar modal reset con Escape */
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape"){
+    document.getElementById("reset-overlay").classList.remove("open");
+  }
+});
 /* ══ COUNTDOWN ══ */
 function tick(){
   const d=new Date("2026-06-11T15:00:00-06:00")-new Date();
@@ -2554,6 +3196,11 @@ function vpConstruirCards(fixtures, enVivo){
         <div>${marcadorHtml}</div>
         <div class="vp-live-eq">${logoA}<div class="vp-live-nom">${p.teams.away.name}</div></div>
       </div>
+      <div style="padding:.375rem .75rem .625rem">
+        <button class="vp-btn-analisis" onclick="analisisAbrir(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+          📊 Análisis · 4 Mercados de Apuesta
+        </button>
+      </div>
     </div>`;
   }).join("");
 }
@@ -2696,6 +3343,702 @@ function vpResultado(tipo, ico, titulo, bodyHtml){
 // Enter en los inputs dispara la búsqueda
 document.getElementById("vp-eq1") && document.getElementById("vp-eq1").addEventListener("keydown",e=>{if(e.key==="Enter")vpBuscar();});
 document.getElementById("vp-eq2") && document.getElementById("vp-eq2").addEventListener("keydown",e=>{if(e.key==="Enter")vpBuscar();});
+
+/* ══════════════════════════════════════════════════════════════
+   MÓDULO ANÁLISIS APUESTAS — V 2.1
+   Motor estadístico para 4 mercados:
+   1. Resultado (1X2)    2. Corners
+   3. Tarjetas amarillas  4. Goles (Over/Under 2.5)
+══════════════════════════════════════════════════════════════ */
+
+let _analisisPartidoActual = null;
+
+/* ── Abrir overlay ── */
+function analisisAbrir(partido) {
+  _analisisPartidoActual = partido;
+  const ov = document.getElementById("analisis-overlay");
+
+  // Rellenar header
+  const logoH = partido.teams.home.logo || "";
+  const logoA = partido.teams.away.logo || "";
+  document.getElementById("ah-logo1").src = logoH;
+  document.getElementById("ah-logo2").src = logoA;
+  document.getElementById("ah-nom1").textContent = partido.teams.home.name;
+  document.getElementById("ah-nom2").textContent = partido.teams.away.name;
+
+  const status = partido.fixture.status.short;
+  const enCurso = ["1H","2H","HT","ET","P"].includes(status);
+  const jugado  = ["FT","AET","PEN"].includes(status);
+  const golesH  = partido.goals.home ?? 0;
+  const golesA  = partido.goals.away ?? 0;
+
+  if(enCurso || jugado) {
+    document.getElementById("ah-score").textContent = `${golesH} - ${golesA}`;
+  } else {
+    document.getElementById("ah-score").textContent = "VS";
+  }
+
+  const estadoMap = {
+    "NS":"Por jugar","1H":"⚽ 1er Tiempo","HT":"⏸ Descanso",
+    "2H":"⚽ 2do Tiempo","ET":"⚽ Prórroga","P":"🥅 Penales",
+    "FT":"Finalizado","AET":"Fin (prórroga)","PEN":"Fin (penales)"
+  };
+  const minTxt = partido.fixture.status.elapsed ? ` · ${partido.fixture.status.elapsed}'` : "";
+  document.getElementById("ah-estado").textContent = (estadoMap[status] || status) + minTxt;
+
+  // Mostrar loading
+  document.getElementById("analisis-body").innerHTML = `
+    <div class="analisis-loading">
+      <div class="analisis-spinner"></div>
+      <div class="analisis-loading-txt">Generando análisis...</div>
+      <div class="analisis-loading-sub">Calculando estadísticas para los 4 mercados</div>
+    </div>`;
+
+  // Abrir overlay
+  ov.style.display = "flex";
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ov.classList.add("open")));
+
+  // Obtener stats de la API y generar análisis
+  setTimeout(()=>_cargarEstadisticasYAnalizar(partido), 400);
+}
+
+/* ── Cerrar overlay ── */
+function analisisCerrar(e) {
+  if(e && e.target !== document.getElementById("analisis-overlay")) return;
+  const ov = document.getElementById("analisis-overlay");
+  ov.classList.remove("open");
+  setTimeout(()=>{ ov.style.display="none"; }, 280);
+}
+
+/* ── Cargar estadísticas via API ── */
+async function _cargarEstadisticasYAnalizar(partido) {
+  try {
+    const key = getApiKey();
+    const fid = partido.fixture.id;
+
+    // Llamada paralela: estadísticas del partido + estadísticas de equipos (últimos 5)
+    const [respStats, respH2H] = await Promise.allSettled([
+      fetch(`https://${API_HOST}/fixtures/statistics?fixture=${fid}`, {
+        headers:{ "x-apisports-key": key }
+      }),
+      fetch(`https://${API_HOST}/fixtures/headtohead?h2h=${partido.teams.home.id}-${partido.teams.away.id}&last=5`, {
+        headers:{ "x-apisports-key": key }
+      })
+    ]);
+
+    let statsData = null, h2hData = null;
+
+    if(respStats.status === "fulfilled" && respStats.value.ok) {
+      const j = await respStats.value.json();
+      statsData = j.response || [];
+    }
+    if(respH2H.status === "fulfilled" && respH2H.value.ok) {
+      const j = await respH2H.value.json();
+      h2hData = j.response || [];
+    }
+
+    _renderAnalisis(partido, statsData, h2hData);
+
+  } catch(err) {
+    _renderAnalisisError(err.message);
+  }
+}
+
+/* ── Extraer stat de la respuesta de la API ── */
+function _getStat(statsTeam, statName) {
+  if(!statsTeam || !statsTeam.statistics) return null;
+  const found = statsTeam.statistics.find(s => s.type === statName);
+  return found ? (found.value ?? null) : null;
+}
+
+/* ── Gauge SVG ── */
+function _gaugeHTML(score, max) {
+  const r = 23;
+  const circ = 2 * Math.PI * r;
+  const fill = circ - (circ * score / max);
+  const nivel = score / max < 0.40 ? "bajo" : score / max < 0.70 ? "medio" : "alto";
+  const color = nivel === "bajo" ? "#ef4444" : nivel === "medio" ? "#f59e0b" : "#16a34a";
+  return `
+    <div class="gauge-wrap nivel-${nivel}">
+      <svg class="gauge-svg" width="58" height="58" viewBox="0 0 58 58">
+        <circle class="gauge-track" cx="29" cy="29" r="${r}"/>
+        <circle class="gauge-fill" cx="29" cy="29" r="${r}"
+          stroke="${color}"
+          stroke-dasharray="${circ.toFixed(1)}"
+          stroke-dashoffset="${fill.toFixed(1)}"/>
+      </svg>
+      <div class="gauge-label">
+        <span>${score}</span>
+        <span class="gauge-max">/${max}</span>
+      </div>
+    </div>`;
+}
+
+/* ── Rec badge ── */
+function _recBadge(score, max) {
+  const r = score / max;
+  const nivel = r < 0.40 ? "bajo" : r < 0.70 ? "medio" : "alto";
+  const texto = r < 0.40 ? "⚠️ No recomendado · Riesgo alto"
+               : r < 0.70 ? "⚡ Moderado · Analiza con cuidado"
+               :             "✅ Recomendado · Señal favorable";
+  return `<div class="apuesta-rec apuesta-rec--${nivel}">
+    <div class="apuesta-rec-dot rec-${nivel}"></div>${texto}
+  </div>`;
+}
+
+/* ── Barra comparativa ── */
+function _compBar(labelH, valH, labelA, valA, total) {
+  if(!total || total <= 0) total = valH + valA || 1;
+  const pctH = Math.round((valH / total) * 100);
+  const pctA = 100 - pctH;
+  return `
+    <div class="comp-bar-wrap">
+      <div class="comp-bar-lbl">
+        <span>${labelH} <strong>${valH}</strong></span>
+        <span><strong>${valA}</strong> ${labelA}</span>
+      </div>
+      <div class="comp-bar">
+        <div class="comp-bar-home" style="width:${pctH}%"></div>
+        <div class="comp-bar-away" style="width:${pctA}%"></div>
+      </div>
+    </div>`;
+}
+
+/* ── Render análisis completo ── */
+function _renderAnalisis(partido, statsData, h2hData) {
+  const homeStats = statsData && statsData[0] ? statsData[0] : null;
+  const awayStats = statsData && statsData[1] ? statsData[1] : null;
+  const h2h       = h2hData || [];
+
+  const nomH = partido.teams.home.name;
+  const nomA = partido.teams.away.name;
+  const golesH = partido.goals.home ?? 0;
+  const golesA = partido.goals.away ?? 0;
+  const status = partido.fixture.status.short;
+  const enCurso = ["1H","2H","HT","ET","P"].includes(status);
+  const jugado  = ["FT","AET","PEN"].includes(status);
+
+  // ── Extraer valores de estadísticas ──
+  const sh_H  = _getStat(homeStats,"Shots on Goal") || _getStat(homeStats,"Shots On Target") || 0;
+  const sh_A  = _getStat(awayStats,"Shots on Goal") || _getStat(awayStats,"Shots On Target") || 0;
+  const shot_H = _getStat(homeStats,"Total Shots") || 0;
+  const shot_A = _getStat(awayStats,"Total Shots") || 0;
+  const corn_H = _getStat(homeStats,"Corner Kicks") || 0;
+  const corn_A = _getStat(awayStats,"Corner Kicks") || 0;
+  const yc_H   = _getStat(homeStats,"Yellow Cards") || 0;
+  const yc_A   = _getStat(awayStats,"Yellow Cards") || 0;
+  const rc_H   = _getStat(homeStats,"Red Cards") || 0;
+  const rc_A   = _getStat(awayStats,"Red Cards") || 0;
+  const fouls_H= _getStat(homeStats,"Fouls") || 0;
+  const fouls_A= _getStat(awayStats,"Fouls") || 0;
+  const poss_H = parseInt(_getStat(homeStats,"Ball Possession")) || 50;
+  const poss_A = 100 - poss_H;
+  const atk_H  = _getStat(homeStats,"Attacks") || 0;
+  const atk_A  = _getStat(awayStats,"Attacks") || 0;
+  const danAtk_H = _getStat(homeStats,"Dangerous Attacks") || 0;
+  const danAtk_A = _getStat(awayStats,"Dangerous Attacks") || 0;
+  const passes_H = _getStat(homeStats,"Total passes") || 0;
+  const passes_A = _getStat(awayStats,"Total passes") || 0;
+  const passPct_H = parseInt(_getStat(homeStats,"Passes %")) || 0;
+  const passPct_A = parseInt(_getStat(awayStats,"Passes %")) || 0;
+  const offside_H = _getStat(homeStats,"Offsides") || 0;
+  const offside_A = _getStat(awayStats,"Offsides") || 0;
+  const saves_H = _getStat(homeStats,"Goalkeeper Saves") || 0;
+  const saves_A = _getStat(awayStats,"Goalkeeper Saves") || 0;
+
+  // ── H2H: calcular promedios históricos ──
+  const h2hGoles = h2h.map(f=>(f.goals.home||0)+(f.goals.away||0));
+  const h2hCorners = h2h.map(f=>{
+    const s = f.statistics || [];
+    const cH = s[0]?.statistics?.find(x=>x.type==="Corner Kicks")?.value||0;
+    const cA = s[1]?.statistics?.find(x=>x.type==="Corner Kicks")?.value||0;
+    return cH + cA;
+  });
+  const avgGolesH2H   = h2hGoles.length   ? (h2hGoles.reduce((a,b)=>a+b,0)/h2hGoles.length).toFixed(1)   : "N/D";
+  const avgCornersH2H = h2hCorners.filter(x=>x>0).length ? (h2hCorners.filter(x=>x>0).reduce((a,b)=>a+b,0)/h2hCorners.filter(x=>x>0).length).toFixed(1) : "N/D";
+  const h2hWinH = h2h.filter(f=>f.teams.home.winner===true).length;
+  const h2hWinA = h2h.filter(f=>f.teams.away.winner===true).length;
+  const h2hDraw  = h2h.filter(f=>f.teams.home.winner===null&&f.teams.away.winner===null).length;
+
+  // Minuto actual
+  const minActual = partido.fixture.status.elapsed || 0;
+  const pct_partido = enCurso ? Math.min(minActual / 90, 1) : (jugado ? 1 : 0);
+
+  /* ════════════════════════════════════════════════════
+     MERCADO 1: RESULTADO (1X2)
+     Puntaje máximo: 20
+  ════════════════════════════════════════════════════ */
+  let score1x2 = 0;
+  const cornTotal = corn_H + corn_A;
+  const shotTotal = sh_H + sh_A;
+  const shotTotalAll = shot_H + shot_A;
+
+  // Dominancia posesión (0-3)
+  const domPoss = Math.abs(poss_H - poss_A);
+  if(domPoss > 20) score1x2 += 3; else if(domPoss > 10) score1x2 += 2; else score1x2 += 1;
+
+  // Tiros al arco (0-4)
+  if(sh_H + sh_A > 10) score1x2 += 4;
+  else if(sh_H + sh_A > 6) score1x2 += 3;
+  else if(sh_H + sh_A > 3) score1x2 += 2;
+  else score1x2 += 1;
+
+  // Ataques peligrosos (0-4)
+  if(danAtk_H + danAtk_A > 80) score1x2 += 4;
+  else if(danAtk_H + danAtk_A > 40) score1x2 += 3;
+  else if(danAtk_H + danAtk_A > 20) score1x2 += 2;
+  else score1x2 += 1;
+
+  // H2H histórico (0-3)
+  if(h2h.length >= 3) score1x2 += 3; else if(h2h.length >= 1) score1x2 += 2; else score1x2 += 0;
+
+  // Eficiencia goleadora (0-3)
+  if(shotTotalAll > 0) {
+    const eff = (sh_H + sh_A) / shotTotalAll;
+    if(eff > 0.5) score1x2 += 3; else if(eff > 0.3) score1x2 += 2; else score1x2 += 1;
+  } else score1x2 += 1;
+
+  // Salvas portero (0-3)
+  if(saves_H + saves_A > 6) score1x2 += 3; else if(saves_H + saves_A > 3) score1x2 += 2; else score1x2 += 1;
+
+  score1x2 = Math.min(score1x2, 20);
+
+  // Determinar favorito
+  let favTxt = "Partido muy igualado";
+  let favColor = "amarillo";
+  if(sh_H > sh_A * 1.5 || (danAtk_H > danAtk_A * 1.3 && poss_H > poss_A)) {
+    favTxt = `<strong>${nomH}</strong> con mayor dominio ofensivo`; favColor = "verde";
+  } else if(sh_A > sh_H * 1.5 || (danAtk_A > danAtk_H * 1.3 && poss_A > poss_H)) {
+    favTxt = `<strong>${nomA}</strong> con mayor presión ofensiva`; favColor = "verde";
+  }
+
+  const htmlWinner1 = poss_H > poss_A ? nomH : nomA;
+  const winnerPct   = poss_H > poss_A ? poss_H : poss_A;
+
+  const card1x2 = `
+  <div class="apuesta-card">
+    <div class="apuesta-head">
+      <span class="apuesta-ico">🏆</span>
+      <div>
+        <div class="apuesta-tit">Resultado · 1X2</div>
+        <div class="apuesta-tipo">Apuesta: ¿Quién gana o empate?</div>
+      </div>
+      ${_gaugeHTML(score1x2, 20)}
+    </div>
+    ${_recBadge(score1x2, 20)}
+    <div class="apuesta-body">
+      <div class="stats-apuesta-grid">
+        <div class="stat-ap">
+          <div class="stat-ap-n">${poss_H}%</div>
+          <div class="stat-ap-l">Posesión ${nomH.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${poss_A}%</div>
+          <div class="stat-ap-l">Posesión ${nomA.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${sh_H} - ${sh_A}</div>
+          <div class="stat-ap-l">Tiros al Arco</div>
+          <div class="stat-ap-sub">Total: ${sh_H + sh_A}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${danAtk_H} - ${danAtk_A}</div>
+          <div class="stat-ap-l">Ataques Peligrosos</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${shot_H} - ${shot_A}</div>
+          <div class="stat-ap-l">Tiros Totales</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${saves_H} - ${saves_A}</div>
+          <div class="stat-ap-l">Salvas Portero</div>
+        </div>
+      </div>
+      ${_compBar(nomH.split(" ")[0], danAtk_H, nomA.split(" ")[0], danAtk_A, danAtk_H+danAtk_A)}
+      ${_compBar("Posesión "+nomH.split(" ")[0], poss_H, nomA.split(" ")[0], poss_A, 100)}
+      <div class="stats-apuesta-grid" style="margin-top:.625rem">
+        <div class="stat-ap">
+          <div class="stat-ap-n">${h2h.length}</div>
+          <div class="stat-ap-l">H2H Historial</div>
+          <div class="stat-ap-sub">${h2hWinH}G · ${h2hDraw}E · ${h2hWinA}G</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${offside_H} - ${offside_A}</div>
+          <div class="stat-ap-l">Fueras de Lugar</div>
+        </div>
+      </div>
+      <div class="analisis-txt analisis-txt-${favColor}">
+        📌 Análisis: ${favTxt}. ${nomH} con ${poss_H}% de posesión vs ${poss_A}% de ${nomA}.
+        Historial H2H: ${h2hWinH} victorias ${nomH.split(" ")[0]} · ${h2hDraw} empates · ${h2hWinA} victorias ${nomA.split(" ")[0]}.
+        ${h2h.length > 0 ? `Promedio goles H2H: <strong>${avgGolesH2H}</strong>.` : "Sin historial H2H disponible."}
+      </div>
+    </div>
+  </div>`;
+
+  /* ════════════════════════════════════════════════════
+     MERCADO 2: CORNERS (Tiros de Esquina)
+     Puntaje máximo: 20
+  ════════════════════════════════════════════════════ */
+  let scoreCorner = 0;
+
+  // Corners actuales (0-5)
+  if(cornTotal >= 12) scoreCorner += 5;
+  else if(cornTotal >= 8)  scoreCorner += 4;
+  else if(cornTotal >= 5)  scoreCorner += 3;
+  else if(cornTotal >= 3)  scoreCorner += 2;
+  else scoreCorner += 1;
+
+  // Proyección al 90' (0-5)
+  let cornersProyectados = cornTotal;
+  if(enCurso && minActual > 5) {
+    cornersProyectados = Math.round((cornTotal / minActual) * 90);
+  }
+  if(cornersProyectados >= 14) scoreCorner += 5;
+  else if(cornersProyectados >= 10) scoreCorner += 4;
+  else if(cornersProyectados >= 7)  scoreCorner += 3;
+  else if(cornersProyectados >= 5)  scoreCorner += 2;
+  else scoreCorner += 1;
+
+  // Tiros al arco → indica alta intensidad (0-4)
+  if(shotTotalAll > 25) scoreCorner += 4;
+  else if(shotTotalAll > 15) scoreCorner += 3;
+  else if(shotTotalAll > 8)  scoreCorner += 2;
+  else scoreCorner += 1;
+
+  // Ataques totales (0-3)
+  const atkTotal = atk_H + atk_A;
+  if(atkTotal > 200) scoreCorner += 3;
+  else if(atkTotal > 100) scoreCorner += 2;
+  else scoreCorner += 1;
+
+  // H2H promedio corners (0-3)
+  if(avgCornersH2H !== "N/D" && parseFloat(avgCornersH2H) >= 10) scoreCorner += 3;
+  else if(avgCornersH2H !== "N/D") scoreCorner += 2;
+  else scoreCorner += 1;
+
+  scoreCorner = Math.min(scoreCorner, 20);
+
+  const cardCorner = `
+  <div class="apuesta-card">
+    <div class="apuesta-head">
+      <span class="apuesta-ico">⛳</span>
+      <div>
+        <div class="apuesta-tit">Corners · Tiros de Esquina</div>
+        <div class="apuesta-tipo">Apuesta: Over/Under corners del partido</div>
+      </div>
+      ${_gaugeHTML(scoreCorner, 20)}
+    </div>
+    ${_recBadge(scoreCorner, 20)}
+    <div class="apuesta-body">
+      <div class="stats-apuesta-grid">
+        <div class="stat-ap">
+          <div class="stat-ap-n">${corn_H}</div>
+          <div class="stat-ap-l">Corners ${nomH.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${corn_A}</div>
+          <div class="stat-ap-l">Corners ${nomA.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${cornTotal}</div>
+          <div class="stat-ap-l">Total Corners</div>
+          <div class="stat-ap-sub">${enCurso?`Min ${minActual}'`:"Partido completo"}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${enCurso ? "~"+cornersProyectados : cornTotal}</div>
+          <div class="stat-ap-l">${enCurso?"Proyección 90'":"Total final"}</div>
+          <div class="stat-ap-sub">${enCurso?"Basado en ritmo actual":""}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${atk_H} - ${atk_A}</div>
+          <div class="stat-ap-l">Ataques Totales</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${avgCornersH2H}</div>
+          <div class="stat-ap-l">Prom. Corners H2H</div>
+          <div class="stat-ap-sub">Últimos ${h2h.length} partidos</div>
+        </div>
+      </div>
+      ${_compBar(nomH.split(" ")[0], corn_H, nomA.split(" ")[0], corn_A, corn_H+corn_A)}
+      ${_compBar("Ataques "+nomH.split(" ")[0], atk_H, nomA.split(" ")[0], atk_A, atk_H+atk_A)}
+      <div class="analisis-txt analisis-txt-${scoreCorner>=14?"verde":scoreCorner>=8?"amarillo":"rojo"}">
+        ⛳ Análisis Corners: ${cornTotal} corners actuales (${corn_H} local · ${corn_A} visitante).
+        ${enCurso ? `Proyección al 90': <strong>~${cornersProyectados} corners</strong>. ` : ""}
+        ${avgCornersH2H !== "N/D" ? `Histórico H2H: <strong>${avgCornersH2H} corners</strong> promedio. ` : ""}
+        ${cornersProyectados >= 10 ? "Partido con alta intensidad ofensiva, favorable para apuestas Over corners." : "Ritmo de corners moderado, considerar Under."}
+      </div>
+    </div>
+  </div>`;
+
+  /* ════════════════════════════════════════════════════
+     MERCADO 3: TARJETAS AMARILLAS
+     Puntaje máximo: 20
+  ════════════════════════════════════════════════════ */
+  let scoreTarjetas = 0;
+  const tarjTotal = yc_H + yc_A;
+  const tarjConRojas = tarjTotal + (rc_H + rc_A) * 2;
+
+  // Tarjetas actuales (0-5)
+  if(tarjTotal >= 6)  scoreTarjetas += 5;
+  else if(tarjTotal >= 4) scoreTarjetas += 4;
+  else if(tarjTotal >= 2) scoreTarjetas += 3;
+  else if(tarjTotal >= 1) scoreTarjetas += 2;
+  else scoreTarjetas += 1;
+
+  // Proyección tarjetas al 90' (0-5)
+  let tarjProyectadas = tarjTotal;
+  if(enCurso && minActual > 5) {
+    tarjProyectadas = Math.round((tarjTotal / minActual) * 90);
+  }
+  if(tarjProyectadas >= 5) scoreTarjetas += 5;
+  else if(tarjProyectadas >= 3) scoreTarjetas += 3;
+  else if(tarjProyectadas >= 2) scoreTarjetas += 2;
+  else scoreTarjetas += 1;
+
+  // Faltas (0-5) → alta correlación con tarjetas
+  const foulsTotal = fouls_H + fouls_A;
+  if(foulsTotal >= 30) scoreTarjetas += 5;
+  else if(foulsTotal >= 20) scoreTarjetas += 4;
+  else if(foulsTotal >= 12) scoreTarjetas += 3;
+  else if(foulsTotal >= 6)  scoreTarjetas += 2;
+  else scoreTarjetas += 1;
+
+  // Rojas = partido muy caliente (0-3)
+  if(rc_H + rc_A > 0) scoreTarjetas += 3;
+
+  // Offsides → indica tensión táctica (0-2)
+  if(offside_H + offside_A > 5) scoreTarjetas += 2;
+  else if(offside_H + offside_A > 2) scoreTarjetas += 1;
+
+  scoreTarjetas = Math.min(scoreTarjetas, 20);
+
+  const cardTarjetas = `
+  <div class="apuesta-card">
+    <div class="apuesta-head">
+      <span class="apuesta-ico">🟨</span>
+      <div>
+        <div class="apuesta-tit">Tarjetas Amarillas</div>
+        <div class="apuesta-tipo">Apuesta: Over/Under tarjetas del partido</div>
+      </div>
+      ${_gaugeHTML(scoreTarjetas, 20)}
+    </div>
+    ${_recBadge(scoreTarjetas, 20)}
+    <div class="apuesta-body">
+      <div class="stats-apuesta-grid">
+        <div class="stat-ap">
+          <div class="stat-ap-n" style="color:#d97706">${yc_H}</div>
+          <div class="stat-ap-l">🟨 ${nomH.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n" style="color:#d97706">${yc_A}</div>
+          <div class="stat-ap-l">🟨 ${nomA.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n" style="color:#dc2626">${rc_H} - ${rc_A}</div>
+          <div class="stat-ap-l">🟥 Tarjetas Rojas</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${tarjTotal}</div>
+          <div class="stat-ap-l">Total Amarillas</div>
+          <div class="stat-ap-sub">${enCurso?"→ ~"+tarjProyectadas+" al 90'":""}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${fouls_H} - ${fouls_A}</div>
+          <div class="stat-ap-l">Faltas Cometidas</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${offside_H} - ${offside_A}</div>
+          <div class="stat-ap-l">Fueras de Lugar</div>
+        </div>
+      </div>
+      ${_compBar("Faltas "+nomH.split(" ")[0], fouls_H, nomA.split(" ")[0], fouls_A, fouls_H+fouls_A)}
+      ${_compBar("Amarillas "+nomH.split(" ")[0], yc_H, nomA.split(" ")[0], yc_A, yc_H+yc_A||1)}
+      <div class="analisis-txt analisis-txt-${scoreTarjetas>=14?"verde":scoreTarjetas>=8?"amarillo":"rojo"}">
+        🟨 Análisis Tarjetas: ${tarjTotal} amarillas y ${rc_H+rc_A} rojas en el partido.
+        ${foulsTotal > 0 ? `<strong>${foulsTotal} faltas</strong> totales (${fouls_H} vs ${fouls_A}).` : ""}
+        ${enCurso && minActual > 0 ? ` Proyección al 90': <strong>~${tarjProyectadas} amarillas</strong>.` : ""}
+        ${tarjTotal >= 4 || foulsTotal >= 20 ? " Partido físico e intenso, señal favorable para Over tarjetas." : " Juego limpio hasta ahora, considerar Under tarjetas."}
+        ${rc_H+rc_A > 0 ? " 🔴 Tarjeta roja en el partido — clima tenso, alto impacto en apuesta." : ""}
+      </div>
+    </div>
+  </div>`;
+
+  /* ════════════════════════════════════════════════════
+     MERCADO 4: GOLES OVER/UNDER 2.5
+     Puntaje máximo: 20
+  ════════════════════════════════════════════════════ */
+  let scoreGoles = 0;
+  const golesTotal = golesH + golesA;
+
+  // Goles actuales (0-5)
+  if(golesTotal >= 4) scoreGoles += 5;
+  else if(golesTotal >= 3) scoreGoles += 4;
+  else if(golesTotal === 2) scoreGoles += 3;
+  else if(golesTotal === 1) scoreGoles += 2;
+  else scoreGoles += 1;
+
+  // Proyección goles al 90' (0-5)
+  let golesProyectados = golesTotal;
+  if(enCurso && minActual > 10) {
+    golesProyectados = parseFloat(((golesTotal / minActual) * 90).toFixed(1));
+  }
+  if(golesProyectados >= 3.5)  scoreGoles += 5;
+  else if(golesProyectados >= 2.5) scoreGoles += 4;
+  else if(golesProyectados >= 1.5) scoreGoles += 2;
+  else scoreGoles += 1;
+
+  // Tiros al arco → señal goleadora (0-4)
+  if(sh_H + sh_A >= 12) scoreGoles += 4;
+  else if(sh_H + sh_A >= 8) scoreGoles += 3;
+  else if(sh_H + sh_A >= 5) scoreGoles += 2;
+  else scoreGoles += 1;
+
+  // H2H goles promedio (0-3)
+  if(avgGolesH2H !== "N/D" && parseFloat(avgGolesH2H) >= 3) scoreGoles += 3;
+  else if(avgGolesH2H !== "N/D" && parseFloat(avgGolesH2H) >= 2) scoreGoles += 2;
+  else if(avgGolesH2H !== "N/D") scoreGoles += 1;
+  else scoreGoles += 1;
+
+  // Ataques peligrosos (0-3)
+  if(danAtk_H + danAtk_A >= 100) scoreGoles += 3;
+  else if(danAtk_H + danAtk_A >= 50) scoreGoles += 2;
+  else scoreGoles += 1;
+
+  scoreGoles = Math.min(scoreGoles, 20);
+
+  const over25 = (enCurso && golesProyectados >= 2.5) || (!enCurso && jugado && golesTotal > 2) || (!enCurso && !jugado && parseFloat(avgGolesH2H||0) >= 2.5);
+
+  const cardGoles = `
+  <div class="apuesta-card">
+    <div class="apuesta-head">
+      <span class="apuesta-ico">⚽</span>
+      <div>
+        <div class="apuesta-tit">Goles · Over/Under 2.5</div>
+        <div class="apuesta-tipo">Apuesta: ¿Más o menos de 2.5 goles?</div>
+      </div>
+      ${_gaugeHTML(scoreGoles, 20)}
+    </div>
+    ${_recBadge(scoreGoles, 20)}
+    <div class="apuesta-body">
+      <div class="stats-apuesta-grid">
+        <div class="stat-ap">
+          <div class="stat-ap-n" style="color:var(--azul)">${golesH}</div>
+          <div class="stat-ap-l">Goles ${nomH.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n" style="color:var(--rojo)">${golesA}</div>
+          <div class="stat-ap-l">Goles ${nomA.split(" ")[0]}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${golesTotal}</div>
+          <div class="stat-ap-l">Total Goles</div>
+          <div class="stat-ap-sub">${enCurso?"En este momento":jugado?"Final":""}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${enCurso?"~"+golesProyectados:golesTotal}</div>
+          <div class="stat-ap-l">${enCurso?"Proyección 90'":"Total partido"}</div>
+          <div class="stat-ap-sub">${over25?"→ Over 2.5":"→ Under 2.5"}</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${sh_H} - ${sh_A}</div>
+          <div class="stat-ap-l">Tiros al Arco</div>
+        </div>
+        <div class="stat-ap">
+          <div class="stat-ap-n">${avgGolesH2H}</div>
+          <div class="stat-ap-l">Prom. Goles H2H</div>
+          <div class="stat-ap-sub">Últimos ${h2h.length} partidos</div>
+        </div>
+      </div>
+      ${_compBar("Tiros "+nomH.split(" ")[0], sh_H, nomA.split(" ")[0], sh_A, sh_H+sh_A||1)}
+      ${_compBar("At.Peligrosos "+nomH.split(" ")[0], danAtk_H, nomA.split(" ")[0], danAtk_A, danAtk_H+danAtk_A||1)}
+      <div class="analisis-txt analisis-txt-${scoreGoles>=14?"verde":scoreGoles>=8?"amarillo":"rojo"}">
+        ⚽ Análisis Over/Under 2.5: ${golesTotal} goles en el partido.
+        ${enCurso && minActual > 0 ? `Proyección al 90': <strong>~${golesProyectados} goles</strong>. ` : ""}
+        ${avgGolesH2H !== "N/D" ? `Promedio H2H histórico: <strong>${avgGolesH2H} goles/partido</strong>. ` : ""}
+        ${sh_H + sh_A > 0 ? `<strong>${sh_H + sh_A} tiros al arco</strong> en total. ` : ""}
+        Señal: <strong>${over25 ? "✅ OVER 2.5" : "⚠️ Under 2.5"}</strong> basado en ritmo de juego.
+      </div>
+    </div>
+  </div>`;
+
+  /* ════════════════════════════════════════════════════
+     RESUMEN GLOBAL — puntuación ponderada /80
+  ════════════════════════════════════════════════════ */
+  const totalScore = score1x2 + scoreCorner + scoreTarjetas + scoreGoles;
+  const totalMax   = 80;
+  const pctTotal   = Math.round((totalScore / totalMax) * 100);
+
+  const mejorMercado = [
+    {nombre:"1X2",          score:score1x2,     ico:"🏆"},
+    {nombre:"Corners",      score:scoreCorner,  ico:"⛳"},
+    {nombre:"Tarjetas",     score:scoreTarjetas,ico:"🟨"},
+    {nombre:"Over/Under",   score:scoreGoles,   ico:"⚽"}
+  ].sort((a,b)=>b.score-a.score)[0];
+
+  const resumen = `
+  <div class="resumen-global">
+    <div class="resumen-tit">📈 Resumen · Puntuación Total</div>
+    <div class="total-bar-wrap">
+      <div class="total-bar-lbl">
+        <span>Atractivo global del partido</span>
+        <span>${totalScore}/${totalMax} pts · ${pctTotal}%</span>
+      </div>
+      <div class="total-bar">
+        <div class="total-bar-fill" style="width:${pctTotal}%"></div>
+      </div>
+    </div>
+    <div class="resumen-grid">
+      <div class="resumen-item">
+        <div class="resumen-item-n" style="color:${score1x2/20<.4?"#ef4444":score1x2/20<.7?"#f59e0b":"#22c55e"}">${score1x2}<span style="font-size:.75rem;color:rgba(255,255,255,.4)">/20</span></div>
+        <div class="resumen-item-l">🏆 Resultado 1X2</div>
+      </div>
+      <div class="resumen-item">
+        <div class="resumen-item-n" style="color:${scoreCorner/20<.4?"#ef4444":scoreCorner/20<.7?"#f59e0b":"#22c55e"}">${scoreCorner}<span style="font-size:.75rem;color:rgba(255,255,255,.4)">/20</span></div>
+        <div class="resumen-item-l">⛳ Corners</div>
+      </div>
+      <div class="resumen-item">
+        <div class="resumen-item-n" style="color:${scoreTarjetas/20<.4?"#ef4444":scoreTarjetas/20<.7?"#f59e0b":"#22c55e"}">${scoreTarjetas}<span style="font-size:.75rem;color:rgba(255,255,255,.4)">/20</span></div>
+        <div class="resumen-item-l">🟨 Tarjetas</div>
+      </div>
+      <div class="resumen-item">
+        <div class="resumen-item-n" style="color:${scoreGoles/20<.4?"#ef4444":scoreGoles/20<.7?"#f59e0b":"#22c55e"}">${scoreGoles}<span style="font-size:.75rem;color:rgba(255,255,255,.4)">/20</span></div>
+        <div class="resumen-item-l">⚽ Goles O/U 2.5</div>
+      </div>
+    </div>
+    <div class="resumen-nota">
+      🌟 Mejor mercado: <strong style="color:#22c55e">${mejorMercado.ico} ${mejorMercado.nombre}</strong> (${mejorMercado.score}/20)
+      · Escala: <span style="color:#ef4444">■</span> 0-8 bajo · <span style="color:#f59e0b">■</span> 9-14 medio · <span style="color:#22c55e">■</span> 15-20 alto
+    </div>
+  </div>
+  <div class="analisis-disclaimer">
+    ⚠️ <strong>Aviso legal:</strong> Este análisis es solo estadístico y educativo. Las apuestas deportivas conllevan riesgo de pérdida de dinero. Apuesta de forma responsable. Datos obtenidos de api-sports.io en tiempo real.
+  </div>`;
+
+  // Versión badge
+  const versionBadge = `<div style="display:inline-flex;align-items:center;gap:.25rem;background:#e8f5e9;color:#15803d;font-family:var(--fm);font-size:.65rem;font-weight:700;padding:2px .5rem;border-radius:var(--r-full);margin-bottom:.75rem">✦ V 2.1 · Motor Estadístico · 4 Mercados · Max 20 pts c/u</div>`;
+
+  document.getElementById("analisis-body").innerHTML = versionBadge + card1x2 + cardCorner + cardTarjetas + cardGoles + resumen;
+}
+
+/* ── Render error ── */
+function _renderAnalisisError(msg) {
+  document.getElementById("analisis-body").innerHTML = `
+    <div style="padding:1.5rem;text-align:center">
+      <div style="font-size:2.5rem;margin-bottom:.75rem">⚠️</div>
+      <div style="font-family:var(--ft);font-size:.9375rem;font-weight:700;color:var(--g900);text-transform:uppercase;margin-bottom:.5rem">
+        Error al obtener estadísticas
+      </div>
+      <div style="font-family:var(--ft);font-size:.8125rem;color:var(--g500);line-height:1.6;margin-bottom:1rem">${msg}</div>
+      <div style="font-family:var(--ft);font-size:.75rem;color:var(--g400);line-height:1.7;background:var(--g50);border-radius:var(--r-md);padding:.75rem">
+        El análisis requiere estadísticas en vivo. Asegúrate de:<br>
+        • Tener una API Key válida en ⚙️<br>
+        • El partido estar EN VIVO o recién finalizado<br>
+        • No haber agotado el límite de 100 req/día
+      </div>
+    </div>`;
+}
+
+
 
 </script>
 </body>
